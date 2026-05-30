@@ -107,9 +107,36 @@
 
   /* FOOTER */
   footer{border-top:1px solid var(--border);padding:2rem 1.5rem;text-align:center;color:var(--muted);font-size:11px;letter-spacing:0.06em;background:var(--dark2);}
-  footer .luna{color:white;font-weight:500;}
-  footer .luna .e{color:var(--red);}
-  footer .luna .learn{color:var(--teal);}
+  footer .footer-name{color:white;font-weight:500;font-size:13px;}
+  footer .social-links{display:flex;align-items:center;gap:12px;justify-content:center;margin-top:8px;}
+  footer .social-link{display:inline-flex;align-items:center;gap:5px;color:var(--muted);font-size:11px;text-decoration:none;transition:color 0.15s;}
+  footer .social-link:hover{color:var(--text);}
+  footer .social-link svg{width:14px;height:14px;}
+
+  /* YEAR FILTER */
+  .year-bar{padding:8px 1.5rem;display:flex;gap:8px;align-items:center;background:var(--dark3);border-bottom:1px solid var(--border);}
+  .year-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-right:4px;}
+  .year-btn{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 16px;cursor:pointer;transition:all 0.15s;}
+  .year-btn:hover{border-color:rgba(255,255,255,0.2);color:var(--text);}
+  .year-btn.active{background:var(--red);border-color:var(--red);color:white;font-weight:500;}
+
+  /* SECTION SUB-ROW (appears after year selection) */
+  .section-sub-row{
+    padding:8px 1.5rem;
+    display:flex;
+    gap:8px;
+    align-items:center;
+    background:var(--dark2);
+    border-bottom:1px solid var(--border);
+    animation:fadeSlideDown 0.18s ease;
+    overflow:hidden;
+  }
+  .section-sub-row.hidden{display:none;}
+  .section-sub-label{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);margin-right:4px;white-space:nowrap;}
+  .sec-btn{background:transparent;border:1px solid var(--border);border-radius:20px;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:11px;padding:5px 18px;cursor:pointer;transition:all 0.15s;font-weight:500;}
+  .sec-btn:hover{border-color:rgba(6,156,189,0.4);color:var(--text);}
+  .sec-btn.active{background:var(--teal);border-color:var(--teal);color:#001a20;font-weight:600;}
+  @keyframes fadeSlideDown{from{opacity:0;transform:translateY(-6px);}to{opacity:1;transform:translateY(0);}}
 
   @media(max-width:500px){.grid{grid-template-columns:1fr 1fr;}.hero{padding:2.5rem 1rem 2rem;}}
 </style>
@@ -165,6 +192,23 @@
   <span class="pill" id="activePill">Toutes sections</span>
 </div>
 
+<!-- YEAR FILTER -->
+<div class="year-bar">
+  <span class="year-label">Année :</span>
+  <button class="year-btn active" onclick="setYear('all',this)">Toutes</button>
+  <button class="year-btn" onclick="setYear('1ere',this)">1ère année</button>
+  <button class="year-btn" onclick="setYear('2eme',this)">2ème année</button>
+</div>
+
+<!-- SECTION SUB-ROW -->
+<div class="section-sub-row hidden" id="sectionSubRow">
+  <span class="section-sub-label">Section :</span>
+  <button class="sec-btn active" id="subAll" onclick="setSubSection('all',this)">Toutes</button>
+  <button class="sec-btn" id="subMP" onclick="setSubSection('MP',this)">MP</button>
+  <button class="sec-btn" id="subPC" onclick="setSubSection('PC',this)">PC</button>
+  <button class="sec-btn" id="subT" onclick="setSubSection('T',this)">T</button>
+</div>
+
 <!-- SEARCH -->
 <div class="search-bar">
   <input class="search-input" type="text" id="searchInput" placeholder="Rechercher un document..." oninput="render()">
@@ -188,7 +232,17 @@
 
 <!-- FOOTER -->
 <footer>
-  <span class="luna">Luna<span class="e">E</span><span class="learn">learn</span></span> &nbsp;·&nbsp; Bibliothèque temporaire des classes préparatoires &nbsp;·&nbsp; 2026 © 🇹🇳
+  <span class="footer-name">LunaElearn</span> &nbsp;·&nbsp; Bibliothèque temporaire des classes préparatoires &nbsp;·&nbsp; 2026 © 🇹🇳
+  <div class="social-links">
+    <a class="social-link" href="https://www.facebook.com/profile.php?id=61580015860639" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+      @LunaElearn
+    </a>
+    <a class="social-link" href="https://www.instagram.com/LunaElearn" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg>
+      @LunaElearn
+    </a>
+  </div>
 </footer>
 
 <script>
@@ -196,56 +250,56 @@
 // Pour ajouter un doc : copier un objet, remplir les champs, mettre isNew:true sur le plus récent.
 // "url" = lien Google Drive ou GitHub direct vers le PDF.
 const resources = [
-  // ── MSI (commun) ──
-  {title:"DS N°1 — MSI",subject:"MSI",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — MSI",subject:"MSI",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
-  {title:"Examen MSI",subject:"MSI",sections:["MP","PC","T"],type:"Examen",year:"2025–2026",url:"#",isNew:false},
+  // ── MSI (commun) — 1ère année ──
+  {title:"DS N°1 — MSI",subject:"MSI",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — MSI",subject:"MSI",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Examen MSI",subject:"MSI",sections:["MP","PC","T"],type:"Examen",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── RDM (T uniquement) ──
-  {title:"DS N°1 — RDM",subject:"RDM",sections:["T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — RDM",subject:"RDM",sections:["T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── RDM (T uniquement) — 2ème année ──
+  {title:"DS N°1 — RDM",subject:"RDM",sections:["T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
+  {title:"Résumé — RDM",subject:"RDM",sections:["T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 
-  // ── Automatique (commun) ──
-  {title:"DS N°1 — Automatique",subject:"Automatique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Automatique",subject:"Automatique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Automatique (commun) — 2ème année ──
+  {title:"DS N°1 — Automatique",subject:"Automatique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
+  {title:"Résumé — Automatique",subject:"Automatique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 
-  // ── Chimie Inorganique (commun) ──
-  {title:"DS — Chimie Inorganique",subject:"Chimie Inorganique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Chimie Inorganique",subject:"Chimie Inorganique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Chimie Inorganique (commun) — 1ère année ──
+  {title:"DS — Chimie Inorganique",subject:"Chimie Inorganique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Chimie Inorganique",subject:"Chimie Inorganique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── Chimie Organique (PC) ──
-  {title:"DS — Chimie Organique",subject:"Chimie Organique",sections:["PC"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Chimie Organique",subject:"Chimie Organique",sections:["PC"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Chimie Organique (PC) — 2ème année ──
+  {title:"DS — Chimie Organique",subject:"Chimie Organique",sections:["PC"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
+  {title:"Résumé — Chimie Organique",subject:"Chimie Organique",sections:["PC"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 
-  // ── Français (commun) ──
-  {title:"DS — Français",subject:"Français",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Dissertation",subject:"Français",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Français (commun) — 1ère & 2ème année ──
+  {title:"DS — Français",subject:"Français",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Dissertation",subject:"Français",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── Anglais (commun) ──
-  {title:"DS — Anglais",subject:"Anglais",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Essay writing",subject:"Anglais",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Anglais (commun) — 1ère & 2ème année ──
+  {title:"DS — Anglais",subject:"Anglais",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Essay writing",subject:"Anglais",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── Informatique (commun) ──
-  {title:"DS — Algorithmique",subject:"Informatique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Structures de données",subject:"Informatique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Informatique (commun) — 1ère année ──
+  {title:"DS — Algorithmique",subject:"Informatique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Structures de données",subject:"Informatique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── Physique (commun + PC spécifique) ──
-  {title:"DS N°1 — Physique",subject:"Physique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Thermodynamique",subject:"Physique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
-  {title:"DS — Physique PC (spécifique)",subject:"Physique",sections:["PC"],type:"DS",year:"2025–2026",url:"#",isNew:false},
+  // ── Physique (commun + PC ) — 1ère & 2ème année ──
+  {title:"DS N°1 — Physique",subject:"Physique",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Thermodynamique",subject:"Physique",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"DS — Physique PC )",subject:"Physique",sections:["PC"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 
-  // ── Mathématiques I (commun) ──
-  {title:"DS N°1 — Mathématiques I",subject:"Mathématiques I",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Algèbre linéaire",subject:"Mathématiques I",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:true},
-  {title:"Examen — Mathématiques I",subject:"Mathématiques I",sections:["MP","PC","T"],type:"Examen",year:"2025–2026",url:"#",isNew:false},
+  // ── Mathématiques I (commun) — 1ère année ──
+  {title:"DS N°1 — Mathématiques I",subject:"Mathématiques I",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
+  {title:"Résumé — Algèbre linéaire",subject:"Mathématiques I",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:true,yearGroup:"1ere"},
+  {title:"Examen — Mathématiques I",subject:"Mathématiques I",sections:["MP","PC","T"],type:"Examen",year:"2025–2026",url:"#",isNew:false,yearGroup:"1ere"},
 
-  // ── Mathématiques II (commun) ──
-  {title:"DS N°1 — Mathématiques II",subject:"Mathématiques II",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — Analyse",subject:"Mathématiques II",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── Mathématiques II (commun) — 2ème année ──
+  {title:"DS N°1 — Mathématiques II",subject:"Mathématiques II",sections:["MP","PC","T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
+  {title:"Résumé — Analyse",subject:"Mathématiques II",sections:["MP","PC","T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 
-  // ── CFM (T uniquement) ──
-  {title:"DS — CFM",subject:"CFM",sections:["T"],type:"DS",year:"2025–2026",url:"#",isNew:false},
-  {title:"Résumé — CFM",subject:"CFM",sections:["T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false},
+  // ── CFM (T uniquement) — 2ème année ──
+  {title:"DS — CFM",subject:"CFM",sections:["T"],type:"DS",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
+  {title:"Résumé — CFM",subject:"CFM",sections:["T"],type:"Résumé",year:"2025–2026",url:"#",isNew:false,yearGroup:"2eme"},
 ];
 
 const dlIcon='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>';
@@ -255,13 +309,17 @@ const TYPES=["DS","Examen","Résumé","Problème"];
 
 let activeSection='all';
 let activeType='all';
+let activeYear='all';
+let activeSubSection='all';
 
 function matches(r){
   const q=document.getElementById('searchInput').value.toLowerCase().trim();
   const secMatch=activeSection==='all'||r.sections.includes(activeSection)||r.subject===activeSection;
   const typeMatch=activeType==='all'||r.type===activeType;
+  const yearMatch=activeYear==='all'||r.yearGroup===activeYear;
+  const subSecMatch=activeSubSection==='all'||r.sections.includes(activeSubSection);
   const qMatch=!q||(r.title+r.subject+r.type).toLowerCase().includes(q);
-  return secMatch&&typeMatch&&qMatch;
+  return secMatch&&typeMatch&&yearMatch&&subSecMatch&&qMatch;
 }
 
 function updateCounts(){
@@ -323,6 +381,31 @@ function setSection(val,btn){
 function setType(val,btn){
   activeType=val;
   document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+
+function setYear(val,btn){
+  activeYear=val;
+  activeSubSection='all';
+  document.querySelectorAll('.year-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  // show/hide section sub-row
+  const subRow=document.getElementById('sectionSubRow');
+  if(val==='all'){
+    subRow.classList.add('hidden');
+  } else {
+    subRow.classList.remove('hidden');
+    // reset sub-section buttons
+    document.querySelectorAll('.sec-btn').forEach(b=>b.classList.remove('active'));
+    document.getElementById('subAll').classList.add('active');
+  }
+  render();
+}
+
+function setSubSection(val,btn){
+  activeSubSection=val;
+  document.querySelectorAll('.sec-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
