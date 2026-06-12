@@ -495,5 +495,137 @@ function setSubSection(val,btn){
 
 render();
 </script>
+
+<!-- CLOUDINARY UPLOAD WIDGET -->
+<script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+
+<button id="uploadBtn" onclick="openUpload()">
+  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+  Proposer un document
+</button>
+
+<div id="uploadToast"></div>
+
+<style>
+  #uploadBtn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    z-index: 9999;
+    background: var(--red);
+    color: #fff;
+    border: none;
+    border-radius: 50px;
+    padding: 13px 20px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(183,2,12,0.45);
+    transition: transform 0.2s, box-shadow 0.2s;
+    letter-spacing: 0.01em;
+  }
+  #uploadBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 28px rgba(183,2,12,0.6);
+  }
+  #uploadToast {
+    position: fixed;
+    bottom: 82px;
+    right: 28px;
+    z-index: 9999;
+    background: var(--dark3);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 11px 16px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    max-width: 260px;
+    opacity: 0;
+    transform: translateY(8px);
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+  }
+  #uploadToast.show {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<script>
+  function openUpload() {
+    const widget = cloudinary.createUploadWidget(
+      {
+        cloudName: 'dhwaf4xhf',
+        uploadPreset: 'ou4qr1br',
+        folder: 'lunaelearn/uploads',
+        sources: ['local'],
+        clientAllowedFormats: ['pdf'],
+        maxFileSize: 20000000,
+        multiple: false,
+        language: 'fr',
+        text: {
+          fr: {
+            or: 'ou',
+            menu: { files: 'Mes fichiers' },
+            selection_counter: { selected: 'sélectionné' },
+            action_btn: { upload: 'Envoyer' },
+            local: {
+              browse: 'Parcourir',
+              dd_title_single: 'Glissez votre PDF ici',
+              dd_title_multi: 'Glissez vos fichiers ici'
+            }
+          }
+        },
+        styles: {
+          palette: {
+            window: '#13131f',
+            windowBorder: 'rgba(255,255,255,0.07)',
+            tabIcon: '#B7020C',
+            menuIcons: '#8888a8',
+            textDark: '#e8e8f0',
+            textLight: '#e8e8f0',
+            link: '#069CBD',
+            action: '#B7020C',
+            inactiveTabIcon: '#555577',
+            error: '#ff4444',
+            inProgress: '#069CBD',
+            complete: '#22c55e',
+            sourceBg: '#1b1b2c'
+          },
+          fonts: {
+            default: null,
+            "'DM Sans', sans-serif": {
+              url: 'https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500&display=swap',
+              active: true
+            }
+          }
+        }
+      },
+      (error, result) => {
+        if (error) {
+          showToast('❌ Erreur lors de l\'envoi.');
+          return;
+        }
+        if (result.event === 'success') {
+          showToast('✅ Document envoyé avec succès !');
+        }
+      }
+    );
+    widget.open();
+  }
+
+  function showToast(msg) {
+    const t = document.getElementById('uploadToast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 4000);
+  }
+</script>
+
 </body>
 </html>
