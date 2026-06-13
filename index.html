@@ -63,7 +63,30 @@
   .nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:14px 16px;cursor:pointer;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
   .nav-btn:hover{color:var(--text);}
   .nav-btn.active{color:var(--teal);border-bottom-color:var(--teal);}
-
+  .concours-btn{
+  color:#f4c542 !important;
+  border-bottom:2px solid #f4c542 !important;
+  font-weight:600;
+  animation:shine 2s ease-in-out infinite;
+  position:relative;
+}
+.concours-btn::after{
+  content:'';
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:2px;
+  background:linear-gradient(90deg,var(--red),#f4c542,var(--teal));
+  animation:gradientMove 2s linear infinite;
+  background-size:200%;
+}
+@keyframes shine{
+  0%,100%{text-shadow:0 0 6px rgba(244,197,66,0.4);}
+  50%{text-shadow:0 0 14px rgba(244,197,66,0.9),0 0 6px rgba(183,2,12,0.4);}
+}
+@keyframes gradientMove{
+  0%{background-position:0%;}
+  100%{background-position:200%;}
+}
   /* ACTIVE INDICATOR */
   .active-indicator{background:var(--dark3);border-bottom:1px solid var(--border);padding:8px 1.5rem;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
   .active-indicator .crumb{color:var(--text);}
@@ -240,6 +263,7 @@
   <button class="nav-btn" onclick="setSection('CFM',this)">CFM (T)</button>
   <button class="nav-btn" onclick="setSection('Français',this)">Français</button>
   <button class="nav-btn" onclick="setSection('Anglais',this)">Anglais</button>
+ <button class="nav-btn concours-btn" onclick="setSection('Concours',this)">✨ Concours 2026</button>
 </nav>
 
 <!-- ACTIVE INDICATOR -->
@@ -418,6 +442,21 @@ const resources = [
 {title:"Espaces Préhilbertiens Réels", subject:"Mathématiques II", sections:["MP","PC","T"], type:"Résumé", year:"2025–2026", yearGroup:"2eme", url:"https://drive.google.com/file/d/1HmkkxRfSEK4Zs6YZkM6FULlz-IzDKRrF/view?usp=drive_link", isNew:false},
 {title:"Équations et Systèmes Différentiels Linéaires", subject:"Mathématiques II", sections:["MP","PC","T"], type:"Résumé", year:"2025–2026", yearGroup:"2eme", url:"https://drive.google.com/file/d/1PPCkHCwDeLm6pOXqs3WyWNX_GDYzO-0V/view?usp=drive_link", isNew:false},
 {title:"Calcul Différentiel", subject:"Mathématiques II", sections:["MP","PC","T"], type:"Résumé", year:"2025–2026", yearGroup:"2eme", url:"https://drive.google.com/file/d/1s3pDPFtrOoxWKnN2yvxKHm3R7SqUlQwe/view?usp=drive_link", isNew:false},
+// CONCOURS NATIONAUX 2026
+{title:"Concours National 2026 — Mathématiques I", subject:"Mathématiques I", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Mathématiques II", subject:"Mathématiques II", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Mathématiques", subject:"Mathématiques I", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Chimie Inorganique", subject:"Chimie Inorganique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Français", subject:"Français", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Anglais", subject:"Anglais", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Physique", subject:"Physique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Physique PC", subject:"Physique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Chimie Organique", subject:"Chimie Organique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — CFM", subject:"CFM", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Automatique", subject:"Automatique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — MSI (T)", subject:"MSI", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — MSI (MP/PC)", subject:"MSI", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
+{title:"Concours National 2026 — Informatique", subject:"Informatique", sections:["Concours"], type:"Concours", year:"2025–2026", yearGroup:"2eme", url:"#", isNew:false},
 ];
 
 const dlIcon='<svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 2v8m0 0l-3-3m3 3l3-3M3 13h10"/></svg>';
