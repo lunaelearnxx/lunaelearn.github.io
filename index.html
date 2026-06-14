@@ -63,29 +63,16 @@
   .nav-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:10px;font-weight:500;letter-spacing:0.12em;text-transform:uppercase;padding:14px 16px;cursor:pointer;white-space:nowrap;transition:color 0.15s,border-color 0.15s;}
   .nav-btn:hover{color:var(--text);}
   .nav-btn.active{color:var(--teal);border-bottom-color:var(--teal);}
-  .concours-btn{
-  color:#f4c542 !important;
-  border-bottom:2px solid #f4c542 !important;
-  font-weight:600;
-  animation:shine 2s ease-in-out infinite;
-  position:relative;
+  .concours-btn {
+  color: #f4c542 !important;
+  font-weight: 600;
+  animation: shine 2s ease-in-out infinite;
+  position: relative;
 }
-.concours-btn::after{
-  content:'';
-  position:absolute;
-  bottom:0;left:0;right:0;
-  height:2px;
-  background:linear-gradient(90deg,var(--red),#f4c542,var(--teal));
-  animation:gradientMove 2s linear infinite;
-  background-size:200%;
-}
-@keyframes shine{
-  0%,100%{text-shadow:0 0 6px rgba(244,197,66,0.4);}
-  50%{text-shadow:0 0 14px rgba(244,197,66,0.9),0 0 6px rgba(183,2,12,0.4);}
-}
-@keyframes gradientMove{
-  0%{background-position:0%;}
-  100%{background-position:200%;}
+
+@keyframes shine {
+  0%, 100% { text-shadow: 0 0 6px rgba(244,197,66,0.4); }
+  50%       { text-shadow: 0 0 14px rgba(244,197,66,0.9), 0 0 6px rgba(183,2,12,0.4); }
 }
   /* ACTIVE INDICATOR */
   .active-indicator{background:var(--dark3);border-bottom:1px solid var(--border);padding:8px 1.5rem;display:flex;align-items:center;gap:8px;font-size:11px;color:var(--muted);}
